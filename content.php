@@ -9,18 +9,22 @@
 		// 3. Perform database query
 		$subject_set = mysqli_query($connection, "SELECT * FROM Subjects", );
 		if (!$subject_set) {
-		    printf("Database query failed: %s\n", $mysqli->error);
+		    printf("Database query failed: %s\n", mysqli_error($connection));
 		}
 		
 		// 4. Use returned data
 		while ($subject = mysqli_fetch_array($subject_set)) {
 			echo "<li> {$subject["menu_name"]} <li />";
-		}
-
-				// 3. Perform database query
-		$page_set = mysqli_query($connection, "SELECT * FROM pages WHERE subject_id = {$subject['id']} ," );
+			
+		
+		// 3. Perform database query
+		$sql = "SELECT * FROM pages WHERE subject_id = ".$subject['id'];
+		//print_r($sql);
+		//die();
+		$page_set = mysqli_query($connection, $sql);
+		//$page_set = mysqli_query($connection, "SELECT * FROM pages WHERE subject_id = {$subject['id']} ," );
 		if (!$page_set) {
-		    printf("Database query failed: %s\n", $mysqli->error);
+		    printf("Database query failed: %s\n", mysqli_error($connection));
 		}
 		
 		echo "<ul class = 'pages'>";
@@ -29,6 +33,8 @@
 			echo "<li> {$page["menu_name"]} <li />";
 		}
 		echo "</ul>";
+
+		}
 
 		?>
 		</ul>
