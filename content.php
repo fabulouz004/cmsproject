@@ -6,11 +6,9 @@
 		<td id="navigation">
 		<ul class = "subjects">
 		<?php
+
 		// 3. Perform database query
-		$subject_set = mysqli_query($connection, "SELECT * FROM Subjects", );
-		if (!$subject_set) {
-		    printf("Database query failed: %s\n", mysqli_error($connection));
-		}
+		$subject_set = get_all_subjects();
 		
 		// 4. Use returned data
 		while ($subject = mysqli_fetch_array($subject_set)) {
@@ -18,14 +16,7 @@
 			
 		
 		// 3. Perform database query
-		$sql = "SELECT * FROM pages WHERE subject_id = ".$subject['id'];
-		//print_r($sql);
-		//die();
-		$page_set = mysqli_query($connection, $sql);
-		//$page_set = mysqli_query($connection, "SELECT * FROM pages WHERE subject_id = {$subject['id']} ," );
-		if (!$page_set) {
-		    printf("Database query failed: %s\n", mysqli_error($connection));
-		}
+		$page_set = get_pages_for_subject( $subject['id'] );
 		
 		echo "<ul class = 'pages'>";
 		// 4. Use returned data
