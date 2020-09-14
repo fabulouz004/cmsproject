@@ -1,38 +1,29 @@
-<?php require_once("includes/functions.php");?>
-<?php require_once("includes/connection.php");?>
-<?php include("includes/header.php");?>
+<?php require_once("includes/session.php"); ?>
+<?php require_once("includes/connection.php"); ?>
+<?php require_once("includes/functions.php"); ?>
+<?php confirm_logged_in(); ?>
+<?php find_selected_page(); ?>
+<?php include("includes/header.php"); ?>
 <table id="structure">
 	<tr>
 		<td id="navigation">
-		<ul class = "subjects">
-		<?php
-
-		// 3. Perform database query
-		$subject_set = get_all_subjects();
-		
-		// 4. Use returned data
-		while ($subject = mysqli_fetch_array($subject_set)) {
-			echo "<li> {$subject["menu_name"]} <li />";
-			
-		
-		// 3. Perform database query
-		$page_set = get_pages_for_subject( $subject['id'] );
-		
-		echo "<ul class = 'pages'>";
-		// 4. Use returned data
-		while ($page = mysqli_fetch_array($page_set)) {
-			echo "<li> {$page["menu_name"]} <li />";
-		}
-		echo "</ul>";
-
-		}
-
-		?>
-		</ul>
+	<?php navigation($sel_subject, $sel_page);?>
+			</br></br>
+			<a href="new_subject.php">+ Add a new subject</a>
 		</td>
 		<td id="page">
-			<h2>Content Area</h2>
-			
+		<?php if (!is_null($sel_subject)) { // subject selected ?>
+			<h2><?php echo $sel_subject['menu_name']; ?></h2>
+		<?php } elseif (!is_null($sel_page)) { // page selected ?>
+			<h2><?php echo $sel_page['menu_name']; ?></h2>
+			<div class="page-content">
+				<?php echo $sel_page['content']; ?>
+			</div>
+			<br />
+			<a href="edit_page.php?page=<?php echo urlencode($sel_page['id']); ?>">Edit page</a>
+		<?php } else { // nothing selected ?>
+			<h2>Select a subject or page to edit</h2>
+		<?php } ?>
 		</td>
 	</tr>
 </table>
